@@ -1,0 +1,49 @@
+{
+  "name": "trymore-astro-template",
+  "version": "2.0.4",
+  "description": "TryMore.inc Astro Template",
+  "type": "module",
+  "scripts": {
+    "dev": "npm run dev:astro & npm run dev:optimize-image",
+    "dev:astro": "astro dev",
+    "dev:optimize-image": "node ./src/integrations/optimizeImage.js",
+    "dev:coding": "IGNORE_SCRIPTS=true npm run dev:astro & npm run dev:optimize-image",
+    "build": "npm-run-all -s build:*",
+    "build:astro": "astro build",
+    "build:convert-relative-path": "node ./src/integrations/convertRelativePath.js",
+    "build:add-query-parameter": "node ./src/integrations/addQueryParameter.js",
+    "build:format": "node ./src/integrations/beautifyHTML.js",
+    "preview": "astro preview",
+    "lint": "npm-run-all -s lint:*",
+    "lint:html": "markuplint \"htdocs/**/*.html\"",
+    "lint:css": "stylelint \"htdocs/**/*.css\"",
+    "lint:js": "eslint \"src/scripts/**/*.{js,ts}\"",
+    "format": "html-beautify \"htdocs/**/*.html\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trymore/astro-template"
+  },
+  "auther": "TryMore.inc",
+  "dependencies": {
+    "astro": "^5.12.5"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.29.0",
+    "@typescript-eslint/eslint-plugin": "^8.38.0",
+    "@typescript-eslint/parser": "^8.38.0",
+    "chokidar": "^4.0.3",
+    "eslint": "^9.29.0",
+    "fs-extra": "^11.3.0",
+    "glob": "^11.0.3",
+    "image-size": "^2.0.2",
+    "js-beautify": "^1.15.4",
+    "markuplint": "^4.12.0",
+    "npm-run-all": "^4.1.5",
+    "postcss-preset-env": "^10.2.3",
+    "sharp": "^0.34.2",
+    "stylelint": "^16.21.0",
+    "stylus": "^0.64.0",
+    "typescript": "^5.8.3"
+  }
+}

@@ -1,0 +1,36 @@
+---
+interface Props {
+  text: string;
+  className?: string;
+  Tag?: string;
+  [key: string]: any;
+}
+
+const { text, className = 'char', Tag = 'span', ...otherProps } = Astro.props as Props;
+
+const splitCharacters = (text: string) => {
+  const characters = []
+  let charIndex = 1
+
+  for (const part of text.split('<br>')) {
+    if (characters.length > 0) characters.push({ type: 'break', value: '<br>' })
+
+    for (const char of part) {
+      const nbsp = char === ' ' && '&nbsp;'
+      characters.push({ type: 'char', value: nbsp ? nbsp : char, index: charIndex++ })
+    }
+  }
+  return characters
+}
+
+const characters = splitCharacters(text)
+---
+{
+  characters.map((item) =>
+    item.type === 'char' ? (
+      <Tag class:list={[`${className} ${className}-${item.index}`]} set:html={item.value} {...otherProps}></Tag>
+    ) : (
+      <br />
+    )
+  )
+}

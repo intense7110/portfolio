@@ -1,0 +1,159 @@
+---
+interface StaticPathParams {
+  params: { [key: string]: string };
+}
+
+interface Page {
+  url?: string;
+  file: string;
+  getStaticPaths?: () => Promise<StaticPathParams[]>;
+}
+
+const pageModules = import.meta.glob<Page>('/src/pages/**/*.astro', { eager: true });
+const allPages = Object.entries(pageModules).map(([file, mod]) => ({ file, ...mod }));
+let pathList = [];
+
+const changeExtension = (filename: string): string => filename.replace(/\.astro$/, '.html');
+
+const extractPath = (fullPath: string): string => {
+  const path = fullPath.split('/src/pages/')[1];
+  return changeExtension(path);
+};
+
+const generateUrl = async (page: Page) => {
+  let baseUrl = page.url || '/';
+
+  if (page.getStaticPaths) {
+    const paths = await page.getStaticPaths();
+
+    paths.forEach((path) => {
+      const dynamicSegmentMatch = page.file.match(/\[\.\.\.(.+?)\]\.astro$/);
+
+      if (dynamicSegmentMatch) {
+        const dynamicSegment = dynamicSegmentMatch[1];
+        const dynamicPath = `${path.params[dynamicSegment]}/`;
+        const dynamicLabel = `${dynamicPath}index.html`;
+        pathList.push({ ...page, url: `/${dynamicPath}`, label: dynamicLabel });
+      } else {
+        baseUrl += '/';
+        pathList.push({ ...page, url: `/${baseUrl}`, label: `/${baseUrl}index.html` });
+      }
+    });
+  } else {
+    const staticPath = extractPath(page.file);
+    const staticUrl = staticPath === 'index.html' ? '/' : `/${staticPath}`;
+    pathList.push({ ...page, url: staticUrl, label: staticPath });
+  }
+};
+
+await Promise.all(allPages.map(generateUrl));
+---
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>URL LIST</title>
+    <style is:inline>
+      .page-url-list {
+        background-color: #f5f5f5;
+        color: #333;
+        font-family: Helvetica Neue, Arial, Hiragino Kaku Gothic ProN, Hiragino Sans, Meiryo, sans-serif;
+        font-weight: 400;
+        padding: 6.666666666666667vw;
+      }
+      @media only screen and (min-width: 769px) {
+        .page-url-list {
+          padding: 50px;
+        }
+      }
+      .url-list-content {
+        margin-inline: auto;
+      }
+      @media only screen and (min-width: 769px) {
+        .url-list-content {
+          max-width: 960px;
+        }
+      }
+      .url-list-heading {
+        line-height: 1;
+        font-size: 4vw;
+        font-weight: 700;
+        margin-bottom: 3.333333333333333vw;
+        text-align: center;
+      }
+      @media only screen and (min-width: 769px) {
+        .url-list-heading {
+          font-size: 2rem;
+          margin-bottom: 20px;
+        }
+      }
+      .url-list {
+        border: 1px solid #d7d7d7;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .url-list-item {
+        font-size: 4vw;
+        background: #fafafb;
+        word-break: break-all;
+      }
+      .url-list-item:not(:first-child) {
+        border-top: 1px solid #d7d7d7;
+      }
+      .url-list-item:nth-child(odd) {
+        background: #fff;
+      }
+      @media only screen and (min-width: 769px) {
+        .url-list-item {
+          line-height: 1;
+          font-size: 1.6rem;
+        }
+      }
+      .url-list-link {
+        color: #333;
+        display: block;
+        height: 100%;
+        padding: 2.666666666666667vw;
+      }
+      @media only screen and (min-width: 769px) {
+        .url-list-link {
+          padding: 15px;
+        }
+      }
+      .url-list-label {
+        display: block;
+        padding-left: 1.4em;
+        position: relative;
+      }
+      @media only screen and (min-width: 769px) {
+        .url-list-label {
+          padding-left: 2em;
+        }
+      }
+      .url-list-label:before {
+        position: absolute;
+        top: 0.4vw;
+        left: 0;
+        content: '📱';
+        display: block;
+      }
+      @media only screen and (min-width: 769px) {
+        .url-list-label:before {
+          content: '🖥️';
+          top: 1px;
+        }
+      }
+    </style>
+  </head>
+  <body class="page-url-list">
+    <div class="url-list-content">
+      <h1 class="url-list-heading">URL LIST</h1>
+      <ul class="url-list">
+        {pathList.map((item) => (
+          <li class="url-list-item"><a class="url-list-link" href={item.url}><span class="url-list-label">{item.label}</span></a></li>
+        ))}
+      </ul>
+    </div>
+  </body>
+</html>

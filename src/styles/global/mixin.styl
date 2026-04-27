@@ -1,0 +1,144 @@
+// @example
+// ---
+// +media('md')
+//   margin 0
+// ---
+media($device)
+  unless ($breakpoints[$device])
+    error($device + 'is not defined.')
+  @media $breakpoints[$device]
+    {block}
+
+// @example
+// ---
+// relative top
+// absolute top 50% left 50%
+// fixed top 100px left
+// sticky top 10vh left right
+// !importantは非対応
+// ---
+relative()
+  _apply-position('relative', arguments)
+
+absolute()
+  _apply-position('absolute', arguments)
+
+fixed()
+  _apply-position('fixed', arguments)
+
+sticky()
+  _apply-position('sticky', arguments)
+
+// @example
+// ---
+// size 100%
+// size 100% auto
+// size 150 150
+// ---
+size($width, $height = $width)
+  height _add-pixel($height)
+  width _add-pixel($width)
+
+// @example
+// ---
+// width vw-sm(150)
+// ---
+vw-sm($val)
+  _vw($val, $viewport-sm)
+
+vw-md($val)
+  _vw($val, $viewport-md)
+
+// @example
+// ---
+// calc-line-height(16, 24)
+// ---
+calc-line-height($font-size = null, $line-height = $font-size)
+  line-height: ($line-height / $font-size)
+
+// @example
+// ---
+// calc-letter-spacing(100)
+// ---
+calc-letter-spacing($letter-spacing)
+  letter-spacing ($letter-spacing / 1000) em
+
+// @example
+// ---
+// font-pixel(16)
+// font-rem(16, 24)
+// font-vw(16, 24, 100)
+// ---
+font-pixel($font-size, $line-height = null, $letter-spacing = null)
+  font-size $font-size px
+  _apply-font-properties($font-size, $line-height, $letter-spacing)
+
+font-rem($font-size, $line-height = null, $letter-spacing = null)
+  font-size ($font-size / 10) rem
+  _apply-font-properties($font-size, $line-height, $letter-spacing)
+
+font-vw($font-size, $line-height = null, $letter-spacing = null)
+  font-size ($font-size / $viewport-sm * 100) vw
+  _apply-font-properties($font-size, $line-height, $letter-spacing)
+
+// @example
+// ---
+// text-replace()
+// ---
+text-replace()
+  overflow hidden
+  text-decoration none
+  text-indent 100%
+  white-space nowrap
+
+// @example
+// ---
+// bg-img($image-path + "example.jpg", left, top, no-repeat, #fff, cover)
+// ---
+bg-img($file-name, $position-x = left, $position-y = top, $repeat-type = null, $bg-color = null, $bg-size = false)
+  background url($file-name) $position-x $position-y $repeat-type $bg-color
+  if ($bg-size)
+    background-size $bg-size
+
+// @example
+// ---
+// bg-img-multiple({
+// '1': $image-path + "example-1.jpg" (left top) no-repeat
+// '2': $image-path + "example-2.jpg" (left top) no-repeat #fff
+// }, {
+// '1': (50px 100px)
+// '2': (50px 100px)
+// })
+// ---
+bg-img-multiple($imagesHash, $sizesHash = false)
+  $images = null
+  for i, props in $imagesHash
+    for prop, j in props
+      if (j == 0)
+        if (i == 1)
+          $images = $images url(prop)
+        else
+          $images = $images, url(prop)
+      else
+        if (prop)
+          $images = $images prop
+  background $images
+  if ($sizesHash)
+    $sizes = null
+    for $i, $prop in $sizesHash
+      if ($prop)
+        if ($i == 1)
+          $sizes = $sizes $prop
+        else
+          $sizes = $sizes, $prop
+    background-size $sizes
+
+// @example
+// ---
+// calc-aspect-ratio(1920, 1080) -> aspect-ratio 16/9
+// ---
+calc-aspect-ratio($width, $height)
+  $divisor = _greatestCommonDivisor($width, $height)
+  $widthRatio = ($width / $divisor)
+  $heightRatio = ($height / $divisor)
+  aspect-ratio $widthRatio / $heightRatio

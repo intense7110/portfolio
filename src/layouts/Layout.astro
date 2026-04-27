@@ -1,0 +1,61 @@
+---
+import {
+  defaultTitle,
+  defaultDescription,
+  defaultOgSiteName,
+  defaultOgUrl,
+  defaultOgImage,
+  defaultOgType,
+  pathImg
+} from "@/consts";
+import getMeta from "@/utilities/getMeta";
+import SvgSprites from "@/components/ui/SvgSprites.astro";
+import Header from "@/layouts/Header.astro";
+import Footer from "@/layouts/Footer.astro";
+import "@/styles/style.styl";
+
+const {
+  pageTitle,
+  pageDescription,
+  pageOgSiteName,
+  pageOgUrl,
+  pageOgImage,
+  pageOgType,
+  pageBodyClass
+} = Astro.props;
+const [title, ogTitle] = getMeta(pageTitle, defaultTitle);
+const [description, ogDescription] = getMeta(pageDescription, defaultDescription);
+const ogSiteName = pageOgSiteName ?? defaultOgSiteName;
+const ogUrl = pageOgUrl ?? defaultOgUrl;
+const ogImage = pageOgImage ?? defaultOgImage;
+const ogType = pageOgType ?? defaultOgType;
+---
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <title>{title}</title>
+    <meta name="description" content={description}>
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:title" content={ogTitle}>
+    <meta property="og:description" content={ogDescription}>
+    <meta property="og:site_name" content={ogSiteName}>
+    <meta property="og:url" content={ogUrl}>
+    <meta property="og:image" content={ogImage}>
+    <meta property="og:type" content={ogType}>
+    <link rel="shortcut icon" type="image/ico" href={`${pathImg}favicon/favicon.svg`} />
+    <script src="../scripts/main.js"></script>
+  </head>
+  <body class={pageBodyClass}>
+    <SvgSprites />
+    <div class="wrapper">
+      <Header />
+      <main class="main">
+        <slot />
+      </main>
+      <Footer />
+    </div>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+---
+interface Props {
+  href: string;
+  title?: string;
+  [key: string]: any;
+}
+
+const { href, title = '', ...otherProps } = Astro.props as Props;
+---
+<svg role="img" aria-hidden={title? null : true} aria-label={title? title : null} {...otherProps}>{title && <title>{title}</title>}<use href={`#${href}`}></use></svg>

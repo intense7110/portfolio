@@ -1,0 +1,22 @@
+{
+  "indent_size": 2,
+  "wrap_line_length": 0, 
+  "html": {
+    "unformatted": [
+      "style",
+      "script",
+      "noscript",
+      "svg",
+      "img",
+      "a",
+      "span",
+      "strong",
+      "em",
+      "sub",
+      "sup",
+      "b",
+      "i",
+      "u"
+    ]
+  }
+}

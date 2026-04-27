@@ -1,0 +1,48 @@
+// pxを追加する関数
+// 単位（px|rem|vw|vh|calc）が付いている場合はそのまま返す。
+_add-pixel($val)
+  if $val == auto
+    return $val
+  else if $val && 'unit' == type($val)
+    if '' != unit($val)
+      return $val
+    else
+      return unit($val, 'px')
+  return $val
+
+// positionを省略形で書けるようにするための関数
+_apply-position($type, $args)
+  i = 0
+  position: unquote($type)
+  for j in (1..4)
+    if length($args) > i
+      {$args[i]}: $args[i + 1] is a 'unit' ? _add-pixel($args[i += 1]) : 0
+    i += 1
+
+// パーセントを計算で割り出す関数
+_percentage()
+  if length(arguments) is 1
+    return percentage(arguments[0])
+  else
+    return percentage(arguments[0] / arguments[1])
+
+// vw計算関数
+_vw($val, $viewport)
+  1vw * _percentage($val, $viewport)
+
+// vh計算関数
+_vh($val, $viewport)
+  1vh * _percentage($val, $viewport)
+
+// line-heightとletter-spacingを追加する関数
+_apply-font-properties($font-size, $line-height = null, $letter-spacing = null)
+  if $letter-spacing
+    calc-letter-spacing($letter-spacing)
+  if $line-height
+    calc-line-height($font-size, $line-height)
+
+// 幅と高さの最大公約数を計算する関数
+_greatestCommonDivisor($width, $height)
+  if $height == 0
+    return $width
+  return _greatestCommonDivisor($height, $width % $height)

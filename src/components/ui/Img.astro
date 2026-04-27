@@ -1,0 +1,16 @@
+---
+import getImageSizes from '@/utilities/getImageSizes';
+
+interface Props {
+  src: string;
+  alt: string;
+  loading?: 'eager' | 'lazy';
+  decoding?: 'sync' | 'async' | 'auto';
+  [key: string]: any;
+}
+
+const { src,  alt = '', loading = 'lazy', decoding = null, ...otherProps } = Astro.props as Props;
+const imagePath = `public${src}`;
+const imageSizes = getImageSizes(imagePath);
+---
+<img src={src} alt={alt} width={imageSizes.width} height={imageSizes.height} loading={loading} decoding={decoding} {...otherProps}>
