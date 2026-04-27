@@ -1,10 +1,153 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 
-const pageTitle       = ["タイトル", "ogタイトル"];
-const pageDescription = ["ディスクリプション", "ogディスクリプション"];
+const pageTitle       = ["Web Portfolio Template", "Web Portfolio Template"];
+const pageDescription = ["Web制作実績を魅力的に伝えるためのポートフォリオサイトテンプレートです。", "Web制作実績を魅力的に伝えるためのポートフォリオサイトテンプレートです。"];
 const pageBodyClass   = "page-home";
+
+const works = [
+  {
+    title: "Brand Site Renewal",
+    type: "Corporate / CMS",
+    lead: "ブランドの印象と問い合わせ導線を整理したコーポレートサイト。",
+    tags: ["Direction", "Astro", "CMS"],
+    tone: "teal",
+  },
+  {
+    title: "SaaS Product LP",
+    type: "Landing Page",
+    lead: "導入メリットと機能比較を短時間で把握できるLP設計。",
+    tags: ["UI Design", "Copy", "Analytics"],
+    tone: "coral",
+  },
+  {
+    title: "Creator Portfolio",
+    type: "Portfolio",
+    lead: "作品の世界観を保ちながら更新しやすく構成したギャラリー。",
+    tags: ["Art Direction", "Front-end", "Motion"],
+    tone: "ink",
+  },
+];
+
+const services = [
+  ["01", "Web Design", "情報設計からビジュアルデザインまで、目的に合う画面を設計します。"],
+  ["02", "Front-end", "Astroを中心に、軽く保守しやすい静的サイトを実装します。"],
+  ["03", "Operation", "公開後の改善、計測、軽微な更新まで継続的に支援します。"],
+];
 ---
 <Layout pageTitle={pageTitle} pageDescription={pageDescription} pageBodyClass={pageBodyClass}>
-  <h1>TryMore Astro Template 🚀</h1>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero__content">
+      <p class="hero__eyebrow">Independent Web Designer / Front-end Developer</p>
+      <h1 id="hero-title" class="hero__title">伝わる設計と、軽やかな実装で、Web制作の価値を形にする。</h1>
+      <p class="hero__text">
+        企画、デザイン、コーディング、公開後の改善まで。制作物の背景と成果が伝わるポートフォリオテンプレートです。
+      </p>
+      <div class="hero__actions">
+        <a class="button button--primary" href="#works">実績を見る</a>
+        <a class="button button--ghost" href="#contact">相談する</a>
+      </div>
+    </div>
+    <div class="hero__visual" aria-hidden="true">
+      <div class="browser">
+        <div class="browser__bar">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="browser__screen">
+          <div class="browser__nav"></div>
+          <div class="browser__headline"></div>
+          <div class="browser__grid">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="browser__panel"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--intro" aria-label="Strengths">
+    <p class="section__kicker">What I Build</p>
+    <div class="intro">
+      <h2 class="intro__title">見た目だけで終わらない、事業や活動の目的に接続したWebサイト。</h2>
+      <p class="intro__text">
+        ユーザーが迷わず情報にたどり着ける構成、更新しやすい実装、印象に残るビジュアルをバランスよく設計します。
+      </p>
+    </div>
+  </section>
+
+  <section id="works" class="section works" aria-labelledby="works-title">
+    <div class="section__head">
+      <p class="section__kicker">Selected Works</p>
+      <h2 id="works-title" class="section__title">制作実績</h2>
+    </div>
+    <div class="works__list">
+      {works.map((work) => (
+        <article class={`work-card work-card--${work.tone}`}>
+          <div class="work-card__visual">
+            <div class="mockup">
+              <span class="mockup__hero"></span>
+              <span class="mockup__line mockup__line--wide"></span>
+              <span class="mockup__line"></span>
+              <span class="mockup__thumb"></span>
+              <span class="mockup__thumb"></span>
+            </div>
+          </div>
+          <div class="work-card__body">
+            <p class="work-card__type">{work.type}</p>
+            <h3 class="work-card__title">{work.title}</h3>
+            <p class="work-card__lead">{work.lead}</p>
+            <ul class="tag-list" aria-label={`${work.title} skills`}>
+              {work.tags.map((tag) => <li>{tag}</li>)}
+            </ul>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section id="services" class="section services" aria-labelledby="services-title">
+    <div class="section__head">
+      <p class="section__kicker">Services</p>
+      <h2 id="services-title" class="section__title">できること</h2>
+    </div>
+    <div class="services__list">
+      {services.map(([number, title, text]) => (
+        <article class="service-item">
+          <p class="service-item__number">{number}</p>
+          <h3 class="service-item__title">{title}</h3>
+          <p class="service-item__text">{text}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section id="profile" class="profile" aria-labelledby="profile-title">
+    <div class="profile__media" aria-hidden="true">
+      <span class="profile__initial">W</span>
+    </div>
+    <div class="profile__body">
+      <p class="section__kicker">Profile</p>
+      <h2 id="profile-title" class="profile__title">Web制作の伴走者として、整理と実装の両方から支えます。</h2>
+      <p class="profile__text">
+        ヒアリングから情報設計、デザイン、Astroでの実装まで一貫して対応。小さく始めて改善し続けるサイト作りを大切にしています。
+      </p>
+      <dl class="profile__facts">
+        <div>
+          <dt>Focus</dt>
+          <dd>Portfolio / Corporate / LP</dd>
+        </div>
+        <div>
+          <dt>Tools</dt>
+          <dd>Astro / Figma / CSS / JavaScript</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="contact" class="contact" aria-labelledby="contact-title">
+    <p class="section__kicker">Contact</p>
+    <h2 id="contact-title" class="contact__title">新しい制作やリニューアルの相談を受け付けています。</h2>
+    <p class="contact__text">まずは目的、公開時期、必要なページ数が分かる範囲でお知らせください。</p>
+    <a class="button button--primary" href="mailto:hello@example.com">hello@example.com</a>
+  </section>
 </Layout>
