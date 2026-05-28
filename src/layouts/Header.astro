@@ -1,12 +1,14 @@
+---
+import { sitePath } from "@/consts";
+---
 <header class="site-header">
-  <a class="site-header__brand" href="/" aria-label="Portfolio home">
-    <span class="site-header__mark">PF</span>
-    <span class="site-header__name">Web Portfolio</span>
+  <a class="site-header__brand" href={sitePath} aria-label="照屋宏哉 portfolio home">
+    <span class="site-header__mark">HT</span>
+    <span class="site-header__name">Hiroya Teruya</span>
   </a>
   <nav class="site-header__nav" aria-label="Primary navigation">
-    <a href="#works">Works</a>
-    <a href="#services">Services</a>
     <a href="#profile">Profile</a>
-    <a href="#contact">Contact</a>
+    <a href="#skills">Skills</a>
+    <a href="#works">Works</a>
   </nav>
 </header>

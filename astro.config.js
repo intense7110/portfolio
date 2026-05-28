@@ -11,7 +11,7 @@ const { root, html, css, js, deletes } = config.build
 // https://astro.build/config
 export default defineConfig({
   site: siteUrl,
-  base: '/',
+  base: '/portfolio',
   server: {
     port: 3000,
     host: true,
