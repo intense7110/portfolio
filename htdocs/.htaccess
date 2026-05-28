@@ -1,4 +1,0 @@
-AuthType Basic
-AuthName "Portfolio"
-AuthUserFile /home/intense/project/portfolio/htdocs/.htpasswd
-Require valid-user
