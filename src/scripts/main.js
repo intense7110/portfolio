@@ -1,26 +1,6 @@
 const AUTH_KEY = 'portfolio-auth';
 const AUTH_VALUE = 'ok';
-const AUTH_TOKEN = 'YToxMjM=';
-
-const lockStyle = document.createElement('style');
-lockStyle.textContent = `
-  html[data-auth-status="locked"] body {
-    visibility: hidden;
-  }
-
-  .auth-fallback {
-    display: grid;
-    min-height: 100vh;
-    place-items: center;
-    padding: 24px;
-    color: #202020;
-    background: #fbfaf7;
-    font-family: system-ui, sans-serif;
-    line-height: 1.7;
-    text-align: center;
-  }
-`;
-document.head.append(lockStyle);
+const AUTH_TOKEN = 'cG9ydGZvbGlvOjIwMjZjYXJlZXI=';
 
 if (sessionStorage.getItem(AUTH_KEY) !== AUTH_VALUE) {
   document.documentElement.dataset.authStatus = 'locked';

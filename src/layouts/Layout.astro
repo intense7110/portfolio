@@ -46,6 +46,30 @@ const ogType = pageOgType ?? defaultOgType;
     <meta property="og:image" content={ogImage}>
     <meta property="og:type" content={ogType}>
     <link rel="shortcut icon" type="image/ico" href={`${pathImg}favicon/favicon.svg`} />
+    <style is:inline>
+      html[data-auth-status="locked"] body {
+        visibility: hidden;
+      }
+
+      .auth-fallback {
+        display: grid;
+        min-height: 100vh;
+        place-items: center;
+        padding: 24px;
+        color: #202020;
+        background: #fbfaf7;
+        font-family: system-ui, sans-serif;
+        line-height: 1.7;
+        text-align: center;
+      }
+    </style>
+    <script is:inline>
+      if (sessionStorage.getItem('portfolio-auth') !== 'ok') {
+        document.documentElement.dataset.authStatus = 'locked';
+      } else {
+        document.documentElement.dataset.authStatus = 'unlocked';
+      }
+    </script>
     <script src="../scripts/main.js"></script>
   </head>
   <body class={pageBodyClass}>

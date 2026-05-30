@@ -1,5 +1,6 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+import { getWorks } from "@/utilities/getWorks.js";
 
 const pageTitle       = ["Koya Teruya | Portfolio", "Koya Teruya | Portfolio"];
 const pageDescription = ["Front-end development, CMS integration, static site building, and more.", "Front-end development, CMS integration, static site building, and more."];
@@ -92,30 +93,7 @@ const skillGroups = [
   },
 ];
 
-const works = [
-  {
-    title: "京都能力開発短期大学校",
-    url: "https://www3.jeed.go.jp/kyoto/college/",
-    role: "サイトリニューアル / CMS連携 / JavaScript実装",
-    text: "本番環境にWordPressを設置できない制約に対し、外部WordPressをヘッドレスCMSとして運用する構成を設計。差分データとフルデータを取得できる専用ダウンロードAPI、GitHub Actionsによる静的ファイルのデプロイ導線、アニメーションを含むJavaScript実装を担当しました。",
-    tools: ["Astro", "JavaScript", "Stylus", "PHP", "GitHub Actions", "Figma", "WordPress"],
-  },
-  {
-    title: "メジナビ",
-    url: "https://www.mejiro.ac.jp/univ/mejinavi2026/",
-    role: "大学プロモーションサイト / アニメーション / 画面遷移",
-    text: "Swupを使ったシームレスなページ遷移と、サイト全体のアニメーションを実装。描画オブジェクトが多い画面でもスマートフォンで重くなりにくいよう、一部を除いてCSSアニメーションへ置き換え、体験と軽量化のバランスを調整しました。",
-    tools: ["Astro", "JavaScript", "Stylus", "Figma"],
-  },
-  {
-    title: "NIKKE バイオハザードコラボ LP",
-    url: "http://toys--nikke-biohazard--main.repo.testup.me/",
-    role: "LP / JavaScript / API / Canvas生成",
-    text: "JS全般とAPIを担当。フォーム入力による簡易謎解きゲーム、クリア人数に応じた合成壁紙のダウンロード機能を実装しました。生成AIではなくCanvasで画像を合成する方式を提案し、統計管理にはクライアントが確認しやすいスプレッドシートを簡易DBとして活用しました。",
-    tools: ["Astro", "JavaScript", "Stylus", "Figma", "Spreadsheet", "AWS"],
-    note: "公開終了 / Basic認証: ID a、Password 123",
-  },
-];
+const works = await getWorks();
 ---
 <Layout pageTitle={pageTitle} pageDescription={pageDescription} pageBodyClass={pageBodyClass}>
   <section class="hero" aria-labelledby="hero-title">
@@ -182,7 +160,7 @@ const works = [
             {group.skills.map(([skill, featured]) => (
               <li class:list={{ "is-featured": featured }}>
                 <span>{skill}</span>
-                {featured && <span aria-label="特に得意">☆</span>}
+                {featured && <span title="特に得意">☆</span>}
               </li>
             ))}
           </ul>
@@ -198,16 +176,36 @@ const works = [
     </div>
     <div class="works__list">
       {works.map((work) => (
-        <article class="work-item">
-          <p class="work-item__role">{work.role}</p>
-          <h3 class="work-item__title">
-            <a href={work.url} target="_blank" rel="noreferrer">{work.title}</a>
-          </h3>
-          <p class="work-item__text">{work.text}</p>
-          {work.note && <p class="work-item__note">{work.note}</p>}
-          <ul class="tag-list" aria-label={`${work.title} 使用スキル`}>
-            {work.tools.map((tool) => <li>{tool}</li>)}
-          </ul>
+        <article class:list={["work-item", { "work-item--has-thumb": work.thumb }]}>
+          {work.thumb && (
+            <div class="work-item__thumb">
+              <img
+                src={work.thumb.url}
+                width={work.thumb.width}
+                height={work.thumb.height}
+                alt={`${work.title} サムネイル`}
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          )}
+          <div class="work-item__body">
+            {work.role && <p class="work-item__role">{work.role}</p>}
+            <h3 class="work-item__title">
+              {work.url ? (
+                <a href={work.url} target="_blank" rel="noreferrer">{work.title}</a>
+              ) : (
+                work.title
+              )}
+            </h3>
+            {work.text && <p class="work-item__text">{work.text}</p>}
+            {work.note && <p class="work-item__note">{work.note}</p>}
+            {work.tools.length > 0 && (
+              <ul class="tag-list" aria-label={`${work.title} 使用スキル`}>
+                {work.tools.map((tool) => <li>{tool}</li>)}
+              </ul>
+            )}
+          </div>
         </article>
       ))}
     </div>

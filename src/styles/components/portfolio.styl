@@ -270,10 +270,31 @@
   border-top 1px solid #d7d1c6
 
 .work-item
+  display grid
+  gap 18px
   padding 28px 0
   border-bottom 1px solid #d7d1c6
   +media('md')
     padding 36px 0
+
+.work-item--has-thumb
+  +media('md')
+    grid-template-columns 280px minmax(0, 1fr)
+    gap 28px
+    align-items start
+
+.work-item__thumb
+  overflow hidden
+  aspect-ratio 16 / 10
+  background #ebe5da
+  border 1px solid #e4e0d8
+  border-radius 6px
+
+.work-item__thumb img
+  display block
+  width 100%
+  height 100%
+  object-fit cover
 
 .work-item__role
   color #8a3b2d

@@ -85,3 +85,8 @@ jsconfig.json
 
 # npm setting file
 .npmrc
+
+# Environment variables
+.env
+.env.*
+!.env.example
