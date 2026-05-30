@@ -36,6 +36,14 @@ const ogType = pageOgType ?? defaultOgType;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="format-detection" content="telephone=no">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SBL48YFYPS"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-SBL48YFYPS');
+    </script>
     <title>{title}</title>
     <meta name="description" content={description}>
     <meta name="twitter:card" content="summary_large_image">
